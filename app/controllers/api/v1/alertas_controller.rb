@@ -8,14 +8,14 @@ module Api
 
       def show
         alertas = Case_Steps_Alerta.find(params[:id])
-        render json: {status: 'SUCCESS', message:'Loaded alertas', data:alertas},status: :ok
+        render json: {status: 'SUCCESS', message:'Loaded alertas by iD', data:alertas},status: :ok
       end
 
       def create
         alertas = Case_Steps_Alerta.new(alertas_params)
 
         if alertas.save
-          render json: {status: 'SUCCESS', message:'Saved alertas', data:alertas},status: :ok
+          render json: {status: 'SUCCESS', message:'Saved alerta', data:alertas},status: :ok
         else
           render json: {status: 'ERROR', message:'Case_Steps_Alerta not saved', data:alertas.errors},status: :unprocessable_entity
         end
@@ -28,9 +28,9 @@ module Api
       end
 
       def update
-        alertas = Case_Steps_Alerta.find(params[:id])
-        if alertas.update_attributes(alertas_params)
-          render json: {status: 'SUCCESS', message:'Updated alertas', data:alertas},status: :ok
+        alerta = Case_Steps_Alerta.find(params[:id])
+        if alerta.update_attributes(alertas_params)
+          render json: {status: 'SUCCESS', message:'Alerta atualizado', data:alerta},status: :ok
         else
           render json: {status: 'ERROR', message:'Case_Steps_Alerta not updated', data:alertas.errors},status: :unprocessable_entity
         end
@@ -39,7 +39,7 @@ module Api
       private
 
       def alertas_params
-        params.permit(:title, :body)
+        params.permit(:name, :dob)
       end
     end
   end
