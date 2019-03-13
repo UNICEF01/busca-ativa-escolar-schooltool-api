@@ -2,10 +2,11 @@ module Api
   module V1
     class AlertasController < ApplicationController
       def index
-        sql = "SELECT * FROM case_steps_alerta csa
+        sql = "SELECT csa.id FROM case_steps_alerta csa
         join case_steps_pesquisa csp on csa.child_id = csp.child_id
         join children c on c.id = csa.child_id
         where csp.school_last_id = " + params[:school_last_id] + " and c.educacenso_year = " + params[:year]
+
         alertas = Case_Steps_Alerta.find_by_sql(sql)
         render json: {status: 'SUCCESS', message: 'Loaded alertas', data: alertas}, status: :ok
       end
