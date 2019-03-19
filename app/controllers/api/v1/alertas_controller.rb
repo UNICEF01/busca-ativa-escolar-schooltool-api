@@ -2,13 +2,18 @@ module Api
   module V1
     class AlertasController < ApplicationController
       def index
-
-        year = params[:year] ? " and c.educacenso_year = " + params[:year] : ''
+        yearparam = params[:year]
+        schoolid = params[:school_last_id]
+        year = yearparam ? " and c.educacenso_year = " + yearparam : ''
 
         sql = "SELECT csa.id, csa.name, csa.mother_name, c.educacenso_year, csa.place_address, csa.place_reference, csa.place_cep, csa.place_neighborhood FROM case_steps_alerta csa
         join case_steps_pesquisa csp on csa.child_id = csp.child_id
         join children c on c.id = csa.child_id
-        where csp.school_last_id = " + params[:school_last_id] + year
+        where csp.school_last_id = " + schoolid
+
+        if yearparam
+          sql = sql + year
+        end
 
         alertas = Case_Steps_Alerta.find_by_sql(sql)
         render json: {status: 'SUCCESS', message: 'Loaded alertas', data: alertas}, status: :ok
