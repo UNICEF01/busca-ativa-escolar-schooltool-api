@@ -2,16 +2,17 @@ module Api
   module V1
     class AlertasController < ApplicationController
       def index
-        yearparam = params[:year]
-        schoolid = params[:school_last_id]
-        year = yearparam ? " and c.educacenso_year = " + yearparam : ''
+        yearParam = params[:year]
+        schoolId = params[:school_last_id]
+        token = params[:token]
+        year = yearParam ? " and c.educacenso_year = " + yearParam : ''
 
         sql = "SELECT csa.id, csa.name, csa.mother_name, c.educacenso_year, csa.place_address, csa.place_reference, csa.place_cep, csa.place_neighborhood FROM case_steps_alerta csa
         join case_steps_pesquisa csp on csa.child_id = csp.child_id
         join children c on c.id = csa.child_id
-        where csp.school_last_id = " + schoolid
+        where csp.school_last_id = " + schoolId
 
-        if yearparam
+        if yearParam
           sql = sql + year
         end
 
