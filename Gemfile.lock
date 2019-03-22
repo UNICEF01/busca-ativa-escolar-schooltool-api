@@ -63,6 +63,9 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
+    passenger (6.0.2)
+      rack
+      rake (>= 0.8.1)
     puma (3.12.0)
     rack (2.0.6)
     rack-cors (1.0.2)
@@ -114,6 +117,7 @@ DEPENDENCIES
   byebug
   faker
   mysql2
+  passenger (>= 5.0.25)
   puma (~> 3.7)
   rack-cors
   rails (~> 5.1.2)
