@@ -5,10 +5,10 @@
 #   gem 'sqlite3'
 #
 default: &default
-  host: 172.17.0.3
+  host: 172.17.0.2
   adapter: mysql2
   username: root
-  password: mysql
+  password: 1234
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
@@ -21,8 +21,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: myarticles
+  database: busca-ativa-escolar
 
 production:
   <<: *default
-  database: myarticles
+  database: busca-ativa-escolar
