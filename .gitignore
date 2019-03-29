@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 vendor
+.bundle
 
 # local env files
 .env.local
