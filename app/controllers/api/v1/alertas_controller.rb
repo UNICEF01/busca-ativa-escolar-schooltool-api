@@ -7,19 +7,21 @@ module Api
         token = params[:token]
         year = yearParam ? " and c.educacenso_year = " + yearParam : ''
 
-        sql = "SELECT csa.id, csa.name,csa.mother_name, c.educacenso_year,
+        sqla = "SELECT csa.id, csa.name,csa.mother_name, c.educacenso_year,
               csa.place_address, csa.place_reference, csa.place_cep, csa.place_neighborhood,
               csp.school_last_name FROM case_steps_alerta csa
               join case_steps_pesquisa csp on csa.child_id = csp.child_id
               join children c on c.id = csa.child_id
               where csa.alert_status = 'pending' AND csp.school_last_id = " + schoolId
+        sqle = "SELECT * from schools where id = " + schoolId
 
         if yearParam
-          sql = sql + year
+          sqla = sqla + year
         end
 
-        alertas = Case_Steps_Alerta.find_by_sql(sql)
-        render json: {status: 'SUCCESS', message: 'Loaded alertas', data: alertas}, status: :ok
+        alertas = Case_Steps_Alerta.find_by_sql(sqla)
+        school = Case_Steps_Alerta.find_by_sql(sqle)
+        render json: {status: 'SUCCESS', message: 'Loaded alertas', data: alertas, school: school[0]}, status: :ok
       end
 
       def show
