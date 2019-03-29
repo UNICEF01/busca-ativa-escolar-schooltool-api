@@ -19,6 +19,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-config/database.yml
-config/secrets.yml
+/config/database.yml
+/config/secrets.yml
 

@@ -7,10 +7,12 @@ module Api
         token = params[:token]
         year = yearParam ? " and c.educacenso_year = " + yearParam : ''
 
-        sql = "SELECT csa.id, csa.name, csa.mother_name, c.educacenso_year, csa.place_address, csa.place_reference, csa.place_cep, csa.place_neighborhood FROM case_steps_alerta csa
-        join case_steps_pesquisa csp on csa.child_id = csp.child_id
-        join children c on c.id = csa.child_id
-        where csp.school_last_id = " + schoolId
+        sql = "SELECT csa.id, csa.name,csa.mother_name, c.educacenso_year,
+              csa.place_address, csa.place_reference, csa.place_cep, csa.place_neighborhood,
+              csp.school_last_name FROM case_steps_alerta csa
+              join case_steps_pesquisa csp on csa.child_id = csp.child_id
+              join children c on c.id = csa.child_id
+              where csa.alert_status = 'pending' AND csp.school_last_id = " + schoolId
 
         if yearParam
           sql = sql + year
