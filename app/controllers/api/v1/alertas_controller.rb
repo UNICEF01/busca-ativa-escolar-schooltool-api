@@ -12,7 +12,8 @@ module Api
               csp.school_last_name FROM case_steps_alerta csa
               join case_steps_pesquisa csp on csa.child_id = csp.child_id
               join children c on c.id = csa.child_id
-              where csa.alert_status = 'pending' AND csp.school_last_id = " + schoolId
+              where csa.alert_status = 'pending' AND c.child_status = 'out_of_school' AND csp.school_last_id = " + schoolId
+
         sqle = "SELECT * from schools where id = " + schoolId
 
         if yearParam
