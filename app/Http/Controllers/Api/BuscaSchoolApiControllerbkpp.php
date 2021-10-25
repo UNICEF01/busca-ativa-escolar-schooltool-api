@@ -8,7 +8,6 @@ use App\Models\Models\Aluno;
 
 class BuscaSchoolApiController extends Controller
 {
-  
     public function __construct(Aluno $aluno, Request $request)
     {
         $this->aluno = $aluno;
@@ -18,23 +17,5 @@ class BuscaSchoolApiController extends Controller
     {
         $data = $this->aluno->all();
         return response()->json($data);
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-    public function update(Request $request, $id)
-    {
-        //
-    }
-    public function destroy($id)
-    {
-        //
     }
 }
