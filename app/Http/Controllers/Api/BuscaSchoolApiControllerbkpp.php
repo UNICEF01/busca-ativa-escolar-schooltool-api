@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Models\Aluno;
+use App\Models\Models\Pesquisa;
 
 class BuscaSchoolApiController extends Controller
 {
-    public function __construct(Aluno $aluno, Request $request)
+    public function __construct(Pesquisa $aluno, Request $request)
     {
         $this->aluno = $aluno;
         $this->request = $request;
