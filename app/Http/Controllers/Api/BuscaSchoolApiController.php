@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Models\Child;
 use App\Models\Models\Pesquisa;
+use App\Models\Models\School;
+use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\String_;
+use Symfony\Component\VarDumper\VarDumper;
 
 class BuscaSchoolApiController extends Controller
 {
@@ -16,51 +20,56 @@ class BuscaSchoolApiController extends Controller
         $this->request = $request;
     }
 
-    public function index()
+    public function returnChildren(Request $request)
     {
+        $idescola = $request->input('school_last_id');
+        $token = $request->input('token');
+        $idescola = intval($idescola);
+
+        $school = School::where([
+            ['token', '=', $token],
+            ['id', '=', $idescola]
+        ])->get()->first();
+
+        if( $school != null ){
+
+            $children = DB::table('children')
+            ->join('case_steps_pesquisa','children.id', '=', 'case_steps_pesquisa.child_id')
+            ->join('schools', 'case_steps_pesquisa.school_last_name', '=', 'schools.name')
+            ->select(['schools.id','schools.token','children.id', 'children.name','children.mother_name', 'case_steps_pesquisa.place_address','case_steps_pesquisa.place_cep','case_steps_pesquisa.place_reference','case_steps_pesquisa.place_neighborhood','children.educacenso_year','case_steps_pesquisa.school_last_name'])
+            ->where([
+                ['schools.id', '=', $idescola]
+            ])->get()->all();
         
-       $children = DB::table('children')
-        ->join('case_steps_pesquisa','children.id', '=', 'case_steps_pesquisa.child_id')
-        ->join('schools', 'case_steps_pesquisa.school_last_name', '=', 'schools.name')
-        ->select('children.id', 'children.name','children.mother_name', 'case_steps_pesquisa.place_address','case_steps_pesquisa.place_cep','case_steps_pesquisa.place_reference','case_steps_pesquisa.place_neighborhood','children.educacenso_year','case_steps_pesquisa.school_last_name')
-        ->where([
-            ['schools.id', '=', 33032211]
-          
-        ])
-       ->get();
-       
-        //$children = DB::table('children')
-        //                ->select('id', 'name', 'mother_name')
-        //                ->get();
+            $final = [
+                "status" => "SUCCESS",
+                "message" => "Loaded alertas",
+                "data" => $children,
+                "school" => $school
+            ];
 
+            return response()->json($final);
 
-        //retornando por mais de uma opçao
-        // $data = Child::where([
-        //     ['age', '=', 16],
-        //     ['child_status', '=', 'cancelled']
-        // ])->get()->all();
+        } else {
 
-        //fazendo contas
-        //$data = Child::count();
+            $final = [
+                "status" => "ERROR",
+                "message" => "Escola não localizada",
+                "data" => null,
+                "school" => null
+            ];
 
-        //retornando quantidade por mais de uma opçao
-        // $data = Child::where([
-        //     ['age', '=', 16],
-        //     ['child_status', '=', 'cancelled']
-        // ])->count();
+            return response()->json($final);
 
-        //retornando por mais de uma opçao
-        // $data = Child::where([
-        //     ['risk_level', '=', 'medium'],
-        //     ['age', '>', 10],
-        //     ['age', '<', 15],
-        //     ['gender', '=', 'female']
-        // ])
-        // ->with(['pesquisa'])
-        // ->get()
-        // ->all();
+        }
 
-        return response()->json($children);
     }
+
+    
+
+
+
+
+
 
 }
