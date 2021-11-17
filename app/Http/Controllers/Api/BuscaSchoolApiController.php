@@ -84,27 +84,26 @@ class BuscaSchoolApiController extends Controller
     
             //4 - update
              $alerta->save();
-    
-             return response()->json($alerta);
             
 
-            $final = [
+             $alerta = [
+               
                 "status" => "SUCCESS",
-                "message" => "Loaded alertas",
+                "message" => "Alerta atualizado",
                 "data" => $alerta
             ];
 
-            return response()->json($final);
+            return response()->json($alerta);
 
         } else {
 
-            $final = [
+            $alerta = [
                 "status" => "ERROR",
-                "message" => "Escola não localizada",
-                "data" =>"Alerta não localizada",
+                "message" => "Alerta não localizada",
+                "data" => null,
             ];
 
-            return response()->json($final);
+            return response()->json($alerta);
                
         }
 
