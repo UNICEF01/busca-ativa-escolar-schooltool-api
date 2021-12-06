@@ -34,7 +34,7 @@ class BuscaSchoolApiController extends Controller
 
             $children = DB::table('children')
             ->join('case_steps_pesquisa','children.id', '=', 'case_steps_pesquisa.child_id')
-            ->join('schools', 'case_steps_pesquisa.school_last_name', '=', 'schools.name')
+            ->join('schools', 'case_steps_pesquisa.school_last_id', '=', 'schools.id')
             ->join('case_steps_alerta','children.id','=', 'case_steps_alerta.child_id')
             ->select(['case_steps_alerta.id','case_steps_alerta.name','case_steps_alerta.mother_name','case_steps_alerta.place_address','case_steps_pesquisa.place_address','case_steps_alerta.place_cep','case_steps_alerta.place_reference','case_steps_alerta.place_neighborhood','children.educacenso_year','case_steps_pesquisa.school_last_name'])
             
