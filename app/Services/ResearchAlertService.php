@@ -6,8 +6,7 @@ use App\Repository\AlertRepository;
 use App\Repository\ResearchRepository;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\Models\Alerta;
 
 class ResearchAlertService implements IAlertResearch
 {
@@ -34,26 +33,16 @@ class ResearchAlertService implements IAlertResearch
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
-        DB::beginTransaction();
-
-        try {
+       
+        $alerta = Alerta::where('id', $attributes['alert_id'])->get()->first();
             
-            $alerta = Alerta::where('id', $attributes['alert_id'])->get()->first();
-            
-            if($alerta){
-                $research = $this->researchRepository->update($attributes, $alerta->child_id);
-                $alert = $this->alertRepository->update($attributes, $attributes['alert_id']);
-            }
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::info($e->getMessage());
-
-            throw new InvalidArgumentException('Unable to update alert/research data');
+        if($alerta){
+            $research = $this->researchRepository->update($attributes, $alerta->child_id);
+            $alert = $this->alertRepository->update($attributes, $attributes['alert_id']);
         }
-
-        DB::commit();
-
+        else
+            throw new InvalidArgumentException('Unable to update alert/research data');
+        
         return $alert;
     }
 
