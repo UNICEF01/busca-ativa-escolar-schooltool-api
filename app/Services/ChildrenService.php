@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\IChildren;
 use App\Models\Models\School;
+use InvalidArgumentException;
 
 class ChildrenService implements IChildren
 {
@@ -24,24 +25,16 @@ class ChildrenService implements IChildren
         if ($validator->fails()) {
             throw new InvalidArgumentException($validator->errors()->first());
         }
-       
-        try {
-            
-            $school = School::where([
-                ['token', '=', $attributes['token']],
-                ['id', '=', $attributes['idescola']]
-            ])->get()->first();
-            
-            if($school){
-                $children = $this->childRepository->findAll(intval($attributes['school_last_id']));
-            }
 
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::info($e->getMessage());
-
+        $school = School::where([
+            ['token', '=', $attributes['token']],
+            ['id', '=', $attributes['idescola']]
+        ])->get()->first();
+        
+        if($school)
+            $children = $this->childRepository->findAll(intval($attributes['school_last_id']));
+        else
             throw new InvalidArgumentException('Unable to found children data');
-        }
 
         return [$children, $school];
 
