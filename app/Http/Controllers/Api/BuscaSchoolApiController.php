@@ -40,10 +40,6 @@ class BuscaSchoolApiController extends Controller
                 ->where(function ($query) {
                     $query->where('case_steps_alerta.place_address', '=', '')
                         ->orWhere('case_steps_alerta.place_address', '=', null)
-                        ->orWhere('case_steps_alerta.place_cep', '=', '')
-                        ->orWhere('case_steps_alerta.place_cep', '=', null)
-                        ->orWhere('case_steps_alerta.place_reference', '=', '')
-                        ->orWhere('case_steps_alerta.place_reference', '=', null)
                         ->orWhere('case_steps_alerta.place_neighborhood', '=', '')
                         ->orWhere('case_steps_alerta.place_neighborhood', '=', null);
 
@@ -111,7 +107,8 @@ class BuscaSchoolApiController extends Controller
             $pesquisa->save(); //4 - update
             $alerta->save(); //4 - update
 
-            $alerta = [ //5 -Retorna o corpo do jason esperado no front
+            $alerta = [
+                //5 -Retorna o corpo do jason esperado no front
                 "status" => "SUCCESS",
                 "message" => "Alerta atualizado",
                 "data" => $alerta //data chama o alerta atualizado
